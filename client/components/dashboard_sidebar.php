@@ -55,7 +55,6 @@ $menu_superadmin = [
         ['Presensi', './pertemuan_hari_ini.php', '<i class="ri-check-line"></i>'],
     ],
     'ADMINISTRASI' => [
-        ['Umpan Balik', './umpan_balik_instruktur.php', '<i class="ri-feedback-line"></i>'],
         ['Analisis Pendapatan', './analisis_pendapatan.php', '<i class="ri-line-chart-line"></i>'],
     ],
     'PENGATURAN' => [
