@@ -82,15 +82,15 @@ if (isset($_POST['update_kredensial'])) {
     }
     redirect("../../client/admin/instruktur.php?edit=$id_instruktur");
 }
-if (isset($_POST['update_status'])) {
-    $id_instruktur = escape($_POST['update_status']);
-    $status = $_POST['status'];
+if (isset($_POST['update_mapel'])) {
+    $id_instruktur = escape($_POST['update_mapel']);
+    $mapel = $_POST['mapel'];
 
-    $sql = "DELETE status FROM instruktur WHERE id_instruktur = '$id_instruktur'";
+    $sql = "DELETE FROM detail_mapel WHERE id_instruktur = '$id_instruktur'";
     $db->query($sql) or die($db->error);
 
-    foreach ($hak_akses as $key => $value) {
-        $sql = "INSERT INTO instruktur (id_instruktur, status) VALUES('$id_instruktur', '$status')";
+    foreach ($mapel as $key => $value) {
+        $sql = "INSERT INTO detail_mapel (id_mapel, id_instruktur) VALUES('$value', '$id_instruktur')";
         if ($value === '1') {
             $db->query($sql) or die($db->error);
             break;

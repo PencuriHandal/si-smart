@@ -81,26 +81,9 @@ if (isset($_GET['edit'])) {
                                 <button type="submit" class="w-full bg-red-500 rounded py-1.5 text-white" name="update_kredensial" value="<?= $instruktur_data['id_instruktur'] ?>">Ubah Data Kredensial</button>
                             </form>
                         </div>
-
                         <div class="flex flex-1 flex-col gap-5 bg-gray-200 dark:bg-gray-700 shadow-lg rounded p-5">
-                            <h4 class="text-gray-800 dark:text-white">Status</h4>
-                            <form id="form_status_instruktur" class="flex-1 flex flex-col justify-between" action="../../api/admin/instruktur.php" method="post">
-                                <div class="flex flex-col gap-5">
-                                        <label class="flex items-center bg-white dark:bg-gray-200 p-5 rounded">
-                                        <input name="status[]" type="checkbox" value="Aktif" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600" <?= in_array($value['status']) ? 'checked' : '' ?>>
-                                            <p for="Aktif" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800"><?= $value='Aktif' ?></p>
-                                        </label>
-                                        <label class="flex items-center bg-white dark:bg-gray-200 p-5 rounded">
-                                        <input name="status[]" type="checkbox" value="Tidak Aktif" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600" <?= in_array($value['status']) ? 'checked' : '' ?>>
-                                            <p for="Tidak Aktif" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-800"><?= $value='Aktif' ?></p>
-                                        </label>
-                                </div>
-                                <button type="submit" class="w-full bg-gray-500 rounded py-1.5 text-white" name="update_status" value="<?= $instruktur_data['id_instruktur'] ?>">Ubah Status</button>
-                            </form>
-                        </div>
-
-                        <div id="form_mapel_instruktur" class="flex-1 flex flex-col" method="post">
-                            <p class="text-normal text-gray-400 dark:text-white">Mapel</p>
+                            <h4 class="text-gray-800 dark:text-white">Data Mapel</h4>
+                            <div id="form_mapel_instruktur" class="flex-1 flex flex-col" method="post">
                             <div class="flex flex-col gap-5">
                                 <?php foreach ($data_mapel as $key => $value) : ?>
                                     <label class="flex items-center bg-white dark:bg-gray-200 p-5 rounded">
@@ -109,7 +92,7 @@ if (isset($_GET['edit'])) {
                                     </label>
                                 <?php endforeach ?>
                             </div>
-                            <button type="submit" class="w-full bg-gray-500 rounded py-1.5 text-white" name="update_status" value="<?= $instruktur_data['id_instruktur'] ?>">Ubah Mapel</button>
+                            <button type="submit" class="w-full bg-gray-500 rounded py-1.5 text-white" name="update_mapel" value="<?= $instruktur_data['id_instruktur'] ?>">Ubah Mapel</button>
                         </div>
                     </div>
                     <?php return // Agar menampilkan 1 data saja 
