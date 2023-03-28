@@ -14,17 +14,17 @@ include_once('../../api/util/db.php');
     <link rel="stylesheet" href="../assets/css/flowbite.min.css" />
     <link rel="stylesheet" href="../assets/css/output.css" />
     <link rel="stylesheet" href="../assets/icons/remixicon/remixicon.css" />
-    <script src="../assets/js/jquery-3.6.4.min.js" defer></script>
+    <script src="../assets/js/chart.umd.min.js" ></script>
+    <script src="../assets/js/jquery-3.6.4.min.js"></script>
     <script src="../assets/js/flowbite.min.js" defer></script>
     <script src="../assets/js/script.js" defer></script>
 
     <script>
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
             document.documentElement.classList.add('dark');
-        } else {
+        else
             document.documentElement.classList.remove('dark')
-        }
     </script>
     <title>SMART App</title>
 </head>
