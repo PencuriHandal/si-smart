@@ -6,6 +6,10 @@ user_access('Admin Akademik');
 $sql = "SELECT m.*, j.nama nama_jenjang FROM mapel m, jenjang j WHERE m.id_jenjang = j.id_jenjang";
 $result = $db->query($sql) or die($sql);
 $result->fetch_assoc();
+
+$sql = "SELECT nama FROM jenjang";
+$data_jenjang = $db->query($sql) or die($db);
+$data_jenjang->fetch_assoc();
 ?>
 
 <div id="mapel" class="w-full min-h-screen flex">
@@ -59,7 +63,7 @@ $result->fetch_assoc();
                                         <form action="../../api/admin/mapel.php" method="post">
                                             <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                    Edit mapel <?= $value['title'] ?>
+                                                    Edit mapel <?= $value['nama'] ?>
                                                 </h3>
                                                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
                                                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +74,7 @@ $result->fetch_assoc();
                                             </div>
                                             <!-- Modal body -->
                                             <div class="p-6 space-y-6">
-                                                <input type="text" name="title" class="w-full p-3 rounded" value="<?= $value['title'] ?>">
+                                                <input type="text" name="title" class="w-full p-3 rounded" value="<?= $value['nama'] ?>">
                                             </div>
                                             <!-- Modal footer -->
                                             <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
