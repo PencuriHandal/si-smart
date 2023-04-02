@@ -1,15 +1,10 @@
 <?php
 include_once('../template/header.php');
 include_once('../../api/auth/access_control.php');
-user_access('Admin Akademik');
-
+user_access(['Super Admin', 'Admin Akademik']);
 $sql = "SELECT * FROM jenjang";
 $data_jenjang = $db->query($sql) or die($db->error);
 $data_jenjang->fetch_assoc();
-
-$sql = "SELECT * FROM siswa s WHERE s.id_siswa NOT IN(SELECT id_ketua_kelas FROM kelas)";
-$data_siswa = $db->query($sql) or die($db->error);
-$data_siswa->fetch_assoc();
 
 if (isset($_GET['edit'])) {
     $id_kelas = $_GET['edit'];
@@ -17,6 +12,10 @@ if (isset($_GET['edit'])) {
     $data_kelas = $db->query($sql) or die($db->error);
     $data_kelas = $data_kelas->fetch_assoc();
     $nama_kelas = $data_kelas['nama'];
+
+    $sql = "SELECT s.* FROM siswa s, detail_kelas dk WHERE dk.id_siswa = s.id_siswa AND dk.id_kelas = '$id_kelas'";
+    $data_siswa = $db->query($sql) or die($db->error);
+    $data_siswa->fetch_assoc();
 } else {
     $sql = "
     SELECT k.*, j.nama jenjang, s.nama ketua_kelas, COUNT(*) jumlah_siswa FROM kelas k
@@ -37,18 +36,18 @@ if (isset($_GET['edit'])) {
             <div class="flex items-center gap-5">
                 <h4 class="my-7 font-semibold text-gray-800 dark:text-white">Data Kelas</h4>
                 <?php if (!isset($_GET['edit'])) : ?>
-                    <button data-modal-target="add_kelas_modal" data-modal-toggle="add_kelas_modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                    <button data-modal-target="add_kelas_modal" data-modal-toggle="add_kelas_modal" class="btn" type="button">
                         Tambah kelas
                     </button>
                 <?php endif ?>
             </div>
             <?php if (isset($_GET['edit'])) : ?>
                 <?php generate_breadcrumb([['title' => 'Kelas', 'filename' => 'kelas.php'], ['title' => "Edit Kelas $nama_kelas", 'filename' => 'kelas.php']]); ?>
-                <form action="../../api/admin/kelas.php" method="post">
-                    <div class="flex mt-5 gap-5">
+                <form action="../../api/admin/kelas.php" method="post" class="bg-gray-700 rounded p-8 mt-8 flex flex-col gap-5 items-start">
+                    <div class="flex gap-5 flex-wrap">
                         <div class="flex flex-col gap-3">
                             <label class="text-gray-800 dark:text-white" for="nama_kelas">Nama Kelas</label>
-                            <input id="nama_kelas" type="text" class="rounded" value="<?= $nama_kelas ?>">
+                            <input id="nama_kelas" name="nama_kelas" type="text" class="rounded" value="<?= $nama_kelas ?>">
                         </div>
                         <div class="flex flex-col gap-3">
                             <label class="text-gray-800 dark:text-white" for="status_kelas">Status Kelas</label>
@@ -69,12 +68,12 @@ if (isset($_GET['edit'])) {
                             <label class="text-gray-800 dark:text-white" for="ketua_kelas">Ketua Kelas</label>
                             <select name="ketua_kelas" id="ketua_kelas" class="rounded">
                                 <?php foreach ($data_siswa as $key => $siswa) : ?>
-                                    <?= $siswa ?>
+                                    <option value="<?= $siswa['id_siswa'] ?>"><?= $siswa['nama'] ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" name="update" value="<?= $id_kelas ?>">Update</button>
+                    <button type="submit" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" name="update" value="<?= $id_kelas ?>">Update</button>
                 </form>
             <?php else : ?>
                 <?php generate_breadcrumb([['title' => 'Kelas', 'filename' => 'kelas.php']]); ?>
@@ -127,13 +126,13 @@ if (isset($_GET['edit'])) {
                                         <?php endif ?>
                                     </td>
                                     <td class="px-6 py-4 flex gap-4">
-                                        <a href="?edit=<?= $value['id_kelas'] ?>" class="px-5 py-2 border border-blue-500 rounded group hover:bg-blue-500">
-                                            <i class="ri-edit-box-line text-blue-500 text-base group-hover:text-white"></i>
+                                        <a class="btn btn--outline-blue group" href="?edit=<?= $value['id_kelas'] ?>" class="px-5 py-2 border border-blue-500 rounded group hover:bg-blue-500">
+                                            <i class="ri-edit-box-line text-blue-500 group-hover:text-white"></i>
                                         </a>
                                         <?php if ($value['jumlah_siswa'] <= 1) : ?>
                                             <form action="../../api/admin/kelas.php" method="post">
-                                                <button type="submit" class="px-5 py-2 border border-red-500 rounded group hover:bg-red-500" name="delete" value="<?= $value['id_kelas'] ?>">
-                                                    <i class="ri-delete-bin-6-line text-red-500 text-base group-hover:text-white"></i>
+                                                <button type="submit" class="btn btn--outline-blue group" name="delete" value="<?= $value['id_kelas'] ?>">
+                                                    <i class="ri-delete-bin-6-line text-red-500 group-hover:text-white"></i>
                                                 </button>
                                             </form>
                                         <?php endif ?>
