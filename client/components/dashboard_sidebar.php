@@ -38,6 +38,7 @@ $menu_instruktur = [
         ['Pertemuan', "../$role/pertemuan.php", '<i class="ri-calendar-event-line"></i>'],
         ['Pertemuan hari ini', "../$role/pertemuan_hari_ini.php", '<i class="ri-calendar-check-fill"></i>'],
         ['Penilaian Siswa', "../$role/penilaian.php", '<i class="ri-star-line"></i>'],
+        ['Penilaian', "../$role/penilaian.php", '<i class="ri-star-line"></i>'],
     ],
     'ADMINISTRASI' => [
         ['Umpan Balik', "../$role/umpan_balik_instruktur.php", '<i class="ri-feedback-line"></i>'],
