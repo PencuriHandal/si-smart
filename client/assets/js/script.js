@@ -20,6 +20,19 @@ $(document).ready(() => {
             && href.match(/(.*)\/(.*.php)(.*)/)[2] === urlFilename
             && $(this).addClass('active')
     })
+
+    $('select.selectize').selectize({
+        onFocus: function () {
+            $(this)[0].clear()
+        }
+    })
+
+    $('select.selectize.group').selectize({
+        sortField: 'text'
+    })
+
+    $('.datatable').DataTable();
+
 })
 
 let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');

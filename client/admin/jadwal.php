@@ -78,7 +78,8 @@ if (isset($_GET['assign_instruktur'])) {
                     <h4 class="my-7 font-semibold text-gray-800 dark:text-white">Jadwal</h4>
                 <?php endif ?>
                 <?php if (isset($_GET['jenjang'])) : ?>
-                    <button data-modal-target="add_jadwal_modal" data-modal-toggle="add_jadwal_modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                    
+                    <button data-modal-target="add_jadwal_modal" data-modal-toggle="add_jadwal_modal"  class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                         Tambah Jadwal
                     </button>
                 <?php endif ?>
@@ -112,7 +113,7 @@ if (isset($_GET['assign_instruktur'])) {
                     <form class="form flex-1 rounded bg-gray-200 dark:bg-gray-600 p-5 space-y-5" action="../../api/admin/jadwal.php" method="post">
                         <label class="text-xl" for="instruktur">Instruktur yang mengampu</label>
                         <label class="block" for="instruktur">Instruktur dibawah ini telah disaring berdasarkan mata pelajaran yang diampu</label>
-                        <select class="input" name="instruktur" id="instruktur">
+                        <select class="input selectize" name="instruktur" id="instruktur" required>
                             <?php
                             $sql = "SELECT i.* FROM detail_mapel d, instruktur i WHERE d.id_instruktur = i.id_instruktur AND d.id_mapel = '$id_mapel'";
                             $data_instruktur = $db->query($sql) or die($db->error);
@@ -180,7 +181,7 @@ if (isset($_GET['assign_instruktur'])) {
                     <?php endforeach ?>
                 </ul>
                 <div class="relative overflow-x-auto mt-5">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <table class="datatable w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">#</th>
