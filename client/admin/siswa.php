@@ -37,7 +37,7 @@ if (isset($_GET['edit'])) {
         <div class="p-4 sm:ml-64">
             <?php include_once '../components/dashboard_navbar.php'; ?>
             <div class="flex items-center gap-5">
-                <h4 class="mt-7 font-semibold text-gray-800 dark:text-white">Data Siswa</h4>
+                <h4 class="mt-7 font-semibold text-gray-800 dark:text-white my-7">Data Siswa</h4>
                 <?php if (!isset($_GET['edit'])) : ?>
                     <button data-modal-target="add_siswa_modal" data-modal-toggle="add_siswa_modal" class="btn" type="button">
                         Tambah Siswa
@@ -156,11 +156,13 @@ if (isset($_GET['edit'])) {
                                     <td class="px-6 py-4"><?= $siswa['tgl_dibuat'] ?></td>
 
                                     <td class="px-6 py-4 flex gap-2">
-                                        <a class="btn btn--outline-blue group" href="?edit=<?= $siswa['id_siswa'] ?>">
-                                            <i class="ri-edit-box-line text-blue-500 group-hover:text-white"></i>
+                                        <a class="btn btn--outline-blue" href="?edit=<?= $siswa['id_siswa'] ?>">
+                                            <i class="ri-edit-box-line"></i>
                                         </a>
                                         <form action="../../api/admin/siswa.php" method="post">
-                                            <button class="btn btn--outline-blue group" type="submit" name="delete" value="<?= $siswa['id_siswa'] ?>"><i class="ri-delete-bin-6-line text-red-500 group-hover:text-white"></i></button>
+                                            <button class="btn btn--outline-red" type="submit" name="delete" value="<?= $siswa['id_siswa'] ?>">
+                                            <i class="ri-delete-bin-6-line"></i>
+                                        </button>
                                         </form>
                                     </td>
                                 </tr>
