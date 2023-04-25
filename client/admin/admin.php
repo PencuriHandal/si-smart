@@ -3,6 +3,7 @@ include_once('../template/header.php');
 include_once('../../api/auth/access_control.php');
 user_access(['Super Admin']);
 
+$user_id = $_SESSION['user_id'];
 $sql = "SELECT * FROM role";
 $data_hak_akses = $db->query($sql) or die($db);
 $data_hak_akses->fetch_assoc();
@@ -17,6 +18,11 @@ if (isset($_GET['edit'])) {
     $hak_akses_admin = [];
     foreach ($result as $key => $value) {
         $hak_akses_admin[] = $value['id_role'];
+    }
+    if (count($hak_akses_admin) > 0) {
+    } else {
+        $_SESSION['toast'] = ['icon' => 'error', 'title' => 'Data hak akses tidak ditemukan', 'icon_color' => 'red', 'text' => 'Silahkan hapus data, lalu buat ulang'];
+        redirect('admin.php');
     }
 } else {
     $sql = "SELECT * FROM admin";
@@ -42,7 +48,6 @@ if (isset($_GET['edit'])) {
 
             <?php if (isset($_GET['edit'])) : ?>
                 <?php generate_breadcrumb([['title' => 'Staff Administrasi', 'filename' => 'admin.php'], ['title' => 'Edit Staff Administrasi', 'filename' => '#']]); ?>
-
                 <?php foreach ($result as $key => $admin_data) :  ?>
                     <div class="flex gap-5 mt-5 flex-col md:flex-row">
                         <div class="flex flex-1 flex-col gap-5 bg-gray-200 dark:bg-gray-700 shadow-lg rounded p-5">
@@ -120,7 +125,7 @@ if (isset($_GET['edit'])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($result as $key => $value) : ?>
+                            <?php foreach ($result as $main_key => $value) : ?>
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th class="px-6 py-4 text-amber-500"></th>
                                     <td class="px-6 py-4"><?= $value['nama'] ?></td>
@@ -152,23 +157,54 @@ if (isset($_GET['edit'])) {
                                     </td>
 
                                     <td class="px-6 py-4 flex gap-2">
-                                        <a class="btn btn--outline-blue" href="?edit=<?= $value['id_admin'] ?>">
-                                            <i class="ri-edit-box-line"></i>
-                                        </a>
-                                        <form action="../../api/admin/admin.php" method="post">
-                                            <button class="btn btn--outline-red" type="submit" name="delete" value="<?= $value['id_admin'] ?>">
+                                        <?php if ($roles->num_rows > 0) : ?>
+                                            <a class="btn btn--outline-blue" href="?edit=<?= $value['id_admin'] ?>">
+                                                <i class="ri-edit-box-line"></i>
+                                            </a>
+                                        <?php else : ?>
+                                            <a class="btn btn--transparent">
+                                                <i class="ri-edit-box-line text-transparent"></i>
+                                            </a>
+                                        <?php endif ?>
+
+                                        <?php if ($value['id_admin'] !== $user_id) : ?>
+                                            <script>
+                                                function handleDelete<?= $main_key ?>() {
+                                                    Swal.fire({
+                                                        title: 'Apakah anda yakin?',
+                                                        text: "Anda tidak akan dapat mengembalikan ini!",
+                                                        icon: 'warning',
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: '#3085d6',
+                                                        cancelButtonColor: '#d33',
+                                                        confirmButtonText: 'Ya, saya yakin!'
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            $.post("../../api/admin/admin.php", {
+                                                                    delete: "<?= $value['id_admin'] ?>"
+                                                                })
+                                                                .then(() => Swal.fire(
+                                                                    'Terhapus!',
+                                                                    'Data berhasil dihapus',
+                                                                    'success',
+                                                                ))
+                                                                .then(() => location.reload())
+                                                        }
+                                                    })
+                                                }
+                                            </script>
+
+                                            <button onclick="handleDelete<?= $main_key ?>()" class="btn btn--outline-red">
                                                 <i class="ri-delete-bin-6-line"></i>
                                             </button>
-                                        </form>
+                                        <?php endif ?>
                                     </td>
                                 </tr>
                             <?php endforeach ?>
                         </tbody>
                     </table>
                 </div>
-
             <?php endif ?>
-
         </div>
     </div>
 </div>
@@ -237,6 +273,4 @@ if (isset($_GET['edit'])) {
     </div>
 </div>
 
-<?php
-$result->free_result();
-include_once('../template/footer.php') ?>
+<?php include_once('../template/footer.php') ?>
